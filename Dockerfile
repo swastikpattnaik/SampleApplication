@@ -1,9 +1,13 @@
-FROM tomcat
+# use a node base image
+FROM node:7-onbuild
 
-WORKDIR /usr/local/tomcat
+# set maintainer
+LABEL maintainer "sunildash11908@gmail.com"
 
-COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
-COPY context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
-COPY target/WebApp.war /usr/local/tomcat/webapps
+# set a health check
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://172.31.57.88:8000 || exit 1
 
-EXPOSE 8080
+# tell docker what port to expose
+EXPOSE 8000
